@@ -213,6 +213,57 @@ Como ya tiene el camino calculado, lo que hace es ir moviendo al jugador entre l
 ##### SetSmooth(bool)
 ##### GetSmooth(bool)
 
+## MINOTAURO
+Cuando no esté viendo al jugador, el minotauro se moverá mediante un merodeo, eligiendo de manera aleatoria un nodo cada cierto tiempo y buscando el camino más rápido hasta él.
+
+### CLASE MerodeoMinotauro
+
+Variables de clase
+
+   float tiempoElegir // tiempo entre elección de siguiente nodo
       
+   float tiempo // tiempo desde la última elección de nodo
+      
+   Nodo nodoObjetivo // nodo elegido hacia el que moverse
+      
+   Camino camino // camino para llegar al nodo objetivo
+
+#### Update
+
+      if nodoObjetivo != null && tiempo < tiempoElegir
+            -movimiento hacia el nodo por el camino
+            tiempo++
+      else
+            nodoObjetivo = (nodo aleatorio del mapa)
+            camino = (camino hasta el nodo elegido por A*)
+	
+Al mismo tiempo que realiza este movimiento se comprobará si ve al jugador, para ello se mirará si este se encuentra en alguno
+de los nodos alcanzables en línea recta en la dirección en la que esté mirando (hasta llegar a una pared o una distancia máxima) por el minotauro.
+
+### CLASE PercepcionMinotauro
+
+Variables de clase
+
+   float distancia // distancia máxima
+      
+   int sentidoX // (1 si está mirando hacia x positiva, -1 si está mirando hacia x negativa, 0 si está mirando hacia y)
+      
+   int sentidoy // (1 si está mirando hacia y positiva, -1 si está mirando hacia y negativa, 0 si está mirando hacia x)
+      
+#### Update
+
+      (cálculo de sentidoX y sentidoY)
+      bool encontrado
+      int i = 0
+      while i < distancia && !encontrado
+            Vector3 posM(minotauro.pos.x + (i * sentidoX) , minotauro.pos.y (i * sentidoY), minotauro.pos.z)
+            Nodo n = nodoDesdePosicion(posM)
+            if n == null // Si n es null significa que hay una pared 
+                  break
+            encontrado = (nodoDesdePosicion(jugador.pos) == n)
+            i += (distancia entre nodos)
+
+Mientras tenga al jugador a la vista, el minotauro intentará alcanzarle mediante un algoritmo de persecución, buscando el camino
+más corto al jugador mediante A*.
             
 
