@@ -66,12 +66,15 @@ namespace UCM.IAV.Navegacion
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 
-                // Si hay ya camino calculado, la muestro en color blanco, y borro la variable con el camino
+                // Si hay ya camino calculado
+                //Ponemos el anterior en blanco y creamos uno nuevo
                 if (path.Count != 0)
                 {
                     ShowPath(path, Color.white);
                     path = new List<Vertex>();
                 }
+
+                //Elegimos con que algoritmo queremos calcular el camino
                 switch (algorithm)
                 {
                     case TesterGraphAlgorithm.ASTAR:
@@ -85,6 +88,8 @@ namespace UCM.IAV.Navegacion
                         path = graph.GetPathDFS(srcObj, dstObj);
                         break; 
                 }
+
+                //Si tenemos activado el suavizado de caminos 
                 if (smoothPath)
                     path = graph.Smooth(path); // Suavizar el camino, una vez calculado
             }
