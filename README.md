@@ -21,7 +21,7 @@ Como variables de clase principales nos encontramos con
             
       Lista de vertices de determina un camino
             
-Las siguientes funciones devuelven caminos entre 2 vertices del grafo
+Las siguientes funciones devuelven caminos entre 2 vértices del grafo
 
 #### -GetPathBFS
 Algoritmo de recorrido en anchura.
@@ -29,13 +29,13 @@ Visita todos los nodos en orden de distancia desde el nodo origen y se queda con
 
 #### -GetPathDFS
 Algoritmo de recorrido en profundidad.
-Recorre todos los vertices alcanzables desde el origen guardando para cada vertice si lo ha visitado o no.
-Este algoritmo en principio no nos interesa para realizar la practica.
+Recorre todos los vértices alcanzables desde el origen guardando para cada vértices si lo ha visitado o no.
+Este algoritmo en principio no nos interesa para realizar la práctica.
 
 #### Funciones auxiliares
-Esta clase usa una serie de funciones que facilitan algunos calculos de coordenadas entre vertices y puntos.
+Esta clase usa una serie de funciones que facilitan algunos calculos de coordenadas entre vértices y puntos.
 ##### -BuildPath (reconstruye el camino para ser valido)
-##### -GetNeighbours (devuelve los vecinos de un vertice)
+##### -GetNeighbours (devuelve los vecinos de un vértice)
 ##### -GetSize (devuelve el tamaño de la lista de vertices del grafo)
 ##### -EuclidDist (Vertex a, Vertex b) (Heurística de distancia euclídea)
 ##### -ManhattanDist (Vertex a, Vertex b) (Heurística de distancia Manhattan)
@@ -43,25 +43,25 @@ Esta clase usa una serie de funciones que facilitan algunos calculos de coordena
       
 ### Clase Vertex:
 
-Representa cada vertice del grafo.
+Representa cada vértice del grafo.
 
 Consta de 3 parámetros:
 
-      -Un id (int) para poder identificarlo en la lista de vertices del grafo
-      -Lista de vertices vecinos (Edges)
-      -Vertice previo (en funcion a la lista de vertices del grafo).
+      -Un id (int) para poder identificarlo en la lista de vértices del grafo
+      -Lista de vértices vecinos (Edges)
+      -Vértice previo (en funcion a la lista de vértices del grafo).
 
 
 ### Clase Edge:
 
-Es la clase que representa una artista entre vertices.
+Es la clase que representa una artista entre vértices.
 
-Esta asociada a un vertice y tiene una variable con el coste.
+Esta asociada a un vértice y tiene una variable con el coste.
 
 
 ### Clase GraphGrid:
 
-Clase hija de "Graph" que se encarga de leer y crear el mapa, representandolo con el grafo.
+Clase hija de "Graph" que se encarga de leer y crear el mapa, representándolo con el grafo.
 
 Aquí se explican brevemente sus funciones.
 
@@ -74,12 +74,12 @@ Inicializa las listas de nodos.
 
 Recorre el tablero y por cada casilla decide qué instanciar, suelo o muro.
 
-Mete esa casilla como vertice añadiendole su componente y añadiendolo a la lista de vertices del tablero.
+Mete esa casilla como vértice añadiendole su componente y añadiendolo a la lista de vértices del tablero.
 
-Despues de añadir cada vertice y configurarlo, se encarga de asignar los vecinos de cada uno.
+Despues de añadir cada vértice y configurarlo, se encarga de asignar los vecinos de cada uno.
 
 #### -SetNeighbours
-Por cada vertice que le llega, crea su lista de vertices vecinos y asocia las posiciones.
+Por cada vértice que le llega, crea su lista de vértices vecinos y asocia las posiciones.
 
 Tiene en cuenta si la posicion es valida (esta dentro del mapa).
 
@@ -125,4 +125,94 @@ Sirve para traducir la posicion del raton a coordenadas del grafo y el tablero.
 
 ### Clase BinaryHeap
 Es un TAD auxiliar que nos va a ayudar a implementar las colas de prioridad que se usan en los algortimos.
+
+## RESOLUCION DE LA PRACTICA
+
+En este apartado se explica cómo vamos a implementar la solución a la practica.
+
+## RESUMEN
+Esta práctica se basa en el mito del Laberinto del Minotauro.
+
+Como su nombre indica, tendremos un laberinto representado internamente con un grafo, el cual tedrá entrada y salida.
+
+En el laberinto estarán 2 agentes, Teseo (el jugador) y el Minotauro (enemigo).
+
+El jugador podrá mover por el laberinto a Teseo mediante input, pero si mantiene el espacio, se calculará el camino más óptimo
+
+
+## JUGADOR
+El jugador tiene 2 funcionamientos, movimiento octodireccional por input o automático siguiendo el camino óptimo hasta encontrar la salida al laberinto.
+
+### CLASE ControlJugador
+Esta clase lleva el control del input para el movimiento por teclas
+
+#### Update
+
+Maneja el movimiento por input del jugador
+
+      // Movimiento octodireccional //
+      Vector3 direccion
+      if(Input.w)
+            direccion.z++
+      if(Input.s)
+            direccion.z--
+      if(Input.a)
+            direccion.x--
+      if(Input.d)
+            direccion.x++
+      
+      Calculamos la velocidad en funcion a la direccion acumulada
+      Orientamos al jugador en la direccion
+      
+      
+      // Movimiento automatico //
+      if(Input.Space)
+            Activamos script de movimiento automatico
+      else if(Input.Space soltamos)
+            Desactivamos script de movimiento automaico
+            
+      // Camino Suavizado //
+      if(!MovimientoAuto.enable && Input.s)
+            activamos o desactivamos el booleano de suavizado del MovimientoAuto 
+            MovimientoAuto.SetSmooth(!MovimientoAuto.GetSmooth) 
+      
+### CLASE MovimientoAutomatico
+Esta clase pide el cálculo del camino y mueve al jugador a la siguiente casilla
+
+Variables de clase
+      lista vértices path (el camino hasta la salida)
+      vertexObjetive (siguiente nodo del camino)
+      idPath (para saber sobre que nodo llegamos)
+      Vertex final (nodo de salida del laberinto)
+      bool smooth (para decir si queremos camino suavizado o no)
+
+#### OnEnable
+Esta función se llama automaticamente al activar el script, se encarga de calcular el camino desde el punto en el que se encuentra en ese momento el jugador.
+
+      Vertex inicio = GetNearestVertex(jugador.pos)
+      path = GetPathAstar (inicio, final)
+      //Miramos si el camino lo queremos suavizado o no 
+      if(smooth)
+            path = Smooth(path)
+      idPath = 0
+      vertexObjetive = path[idPath] //el nodo objetivo es el siguiente al que tiene que ir el jugador
+     
+
+#### Update
+Como ya tiene el camino calculado, lo que hace es ir moviendo al jugador entre los nodos del camino.
+      
+      //Movemos al jugador
+      Vector3 direccion = vertexObjetive.pos - jugador.pos
+      velocidad = direccion
+      
+      //Si llegamos al nodo objetivo, pasamos al siguiente
+      if(jugador.pos = vertexObjetive.pos (con margen))
+            idPath++
+            vertexObjetive = path[idPath]
+            
+##### SetSmooth(bool)
+##### GetSmooth(bool)
+
+      
+            
 
