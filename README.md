@@ -266,4 +266,138 @@ Variables de clase
 Mientras tenga al jugador a la vista, el minotauro intentará alcanzarle mediante un algoritmo de persecución, buscando el camino
 más corto al jugador mediante A*.
             
+## ALGORITMO A*
+Se utilizará este algoritmo para realizar las búsquedas de caminos que necesite cada personaje.
+
+### pathfindAStar(graph: Graph, start: Node, end: Node, heuristic: Heuristic):
+	  // Esta estructura se utiliza para guardar la información de cada nodo
+	  class NodeRecord:
+		node: Node
+		connection: Connection
+		costSoFar: float
+		estimatedTotalCost: float
+
+	  // Inicializa el record para el nodo de inicio
+	  startRecord = new NodeRecord()
+	  startRecord.node = start
+	  startRecord.connection = null
+	  startRecord.costSoFar = 0
+	  startRecord.estimatedTotalCost = heuristic.estimate(start)
+
+	  // Inicializa las listas de abiertos y cerrados
+	  open = new PathfindingList()
+	  open += startRecord
+	  closed = new PathfindingList()
+
+	  // Itera procesando cada nodo
+	  while length(open) > 0:
+
+		// Encuentra el menor elemento en la lista de abiertos (usando estimatedTotalCost).
+		current = open.smallestElement()
+		// Si es el nodo objetivo, termina el bucle.
+		if current.node == goal:
+			break
+
+		// Si no obtiene sus conexiones a los siguientes nodos.
+		connections = graph.getConnections(current)
+
+		// Itera por cada conexión.
+		for connection in connections:
+			// Obtiene el coste estimado para el nodo final.
+			endNode = connection.getToNode()
+			endNodeCost = current.costSoFar + connection.getCost()
+
+			 // Si el nodo está cerrado hay que saltarlo o eliminarlo de la lista de cerrados.
+			 if closed.contains(endNode):
+			 // Encuentra el record para el nodo cerrado.
+				endNodeRecord = closed.find(endNode)
+
+				// Si no encuentra una ruta más corta salta el nodo.
+				if endNodeRecord.costSoFar <= endNodeCost:
+					continue
+
+				// Si la encuentra lo elimina de la lista de cerrados.
+				closed -= endNodeRecord
+
+				// Usa los antiguos valores del nodo para calcular su heuristica sin llamar a la funcion heuristica.
+				endNodeHeuristic = endNodeRecord.estimatedTotalCost - endNodeRecord.costSoFar
+
+			// Salta el nodo si está abierto y no encuentra una mejor ruta.
+			else if open.contains(endNode):
+			// Encuentra el record en la lista de abiertos para el nodo final.
+				endNodeRecord = open.find(endNode)
+
+				// Si la ruta no es mejor, lo salta.
+				if endNodeRecord.costSoFar <= endNodeCost:
+					continue
+
+				// Calcula su heuristica.
+				endNodeHeuristic = endNodeRecord.cost - endNodeRecord.costSoFar
+
+			// Si no, tiene un nodo no visitado, asi que guarda su record.
+			else:
+				endNodeRecord = new NodeRecord()
+				endNodeRecord.node = endNode
+
+				// Calcula el valor heuristico usando la función, ya que no tiene un record que usar.
+				endNodeHeuristic = heuristic.estimate(endNode)
+
+			// Actualiza el coste, el estimado y la conexión del nodo.
+			endNodeRecord.cost = endNodeCost
+			endNodeRecord.connection = connection
+			endNodeRecord.estimatedTotalCost = endNodeCost + endNodeHeuristic
+
+			// Y lo añade a la lista de abiertos.
+			if not open.contains(endNode):
+				open += endNodeRecord
+
+		// Añade el nodo a la lista de cerrados y lo añade a la de abiertos.
+		open -= current
+		closed += current
+
+	   if current.node != goal:   
+		// No hay más nodos y no ha encontrado el final así que no hay solución.
+		return null
+
+	   else:
+		// Compila la lista de conexiones en el camino.
+		path = []
+
+		// Recorre el camino hacia atrás acumulando conexiones.
+		while current.node != start:
+			path += current.connection
+			current = current.connection.getFromNode()
+
+		// Da la vuelta al camino y lo devuelve.
+		return reverse(path)
+
+## ALGORITMO DE SUAVIZADO
+Se utilizará para suavizar los caminos encontrados por A*
+
+### smoothPath(inputPath: Vector[]):
+	// Si el camino solo contiene dos nodos no puede suavizarlo.
+	if len(inputPath) == 2:
+		return inputPath
+	// Compila un camino de salida.
+	outputPath = [inputPath[0]]
+
+	// Guarda la posición en el camino de entrada, empieza en 2 porque se assume que 2 nodos adyacentes pasarán el ray cast.
+	inputIndex: int = 2
+
+ 	// Itera hasta encontrar el último item de la entrada.
+ 	while inputIndex < len(inputPath) - 1:
+ 		// Ray cast.
+ 		fromPt = outputPath[len(outputPath) - 1]
+ 		toPt = inputPath[inputIndex]
+ 		if not rayClear(fromPt, toPt):
+			// Añade el último nodo que superó el ray cast al camino de salida.
+			outputPath += inputPath[inputIndex - 1]
+
+	// Considera el siguiente nodo.
+ 	inputIndex ++
+
+ 	// Añade el último nodo al camino de salida y lo devuelve.
+ 	outputPath += inputPath[len(inputPath) - 1]
+
+	return outputPath
 
