@@ -2,7 +2,7 @@ type octile
 height 49
 width 49
 map
-TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT*TTTTTTTTT
 TTT............TTTT.TTT...TTTT.TTTT............TT
 TT.............TTT........TTT..TTT.............TT
 T...............................................T
@@ -50,4 +50,4 @@ T...............................................T
 T...............................................T
 T...................TTT...TTT...................T
 TTT............TTTT.TTTT..TTTT.TTTT............TT
-TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+TTTTTTTTTpTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT

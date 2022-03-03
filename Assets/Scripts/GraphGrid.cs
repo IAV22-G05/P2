@@ -23,6 +23,7 @@ namespace UCM.IAV.Navegacion
 
     public class GraphGrid : Graph
     {
+        public GameObject TheseoPrefab;
         public GameObject obstaclePrefab;
         public string mapsDir = "Maps"; // Directorio por defecto
         public string mapName = "arena.map"; // Fichero por defecto
@@ -37,6 +38,8 @@ namespace UCM.IAV.Navegacion
         int numRows;
         GameObject[] vertexObjs;
         bool[,] mapVertices;
+
+        Vertex exitVertex;
 
         //Convertidor de posicion a id para las listas
         private int GridToId(int x, int y)
@@ -92,8 +95,9 @@ namespace UCM.IAV.Navegacion
                         {
                             //Si lees ".", es una casilla de suelo
                             bool isGround = true;
-                            if (line[j] != '.')
+                            if (line[j] == 'T')
                                 isGround = false;
+                          
                             mapVertices[i, j] = isGround;
 
                             //Tamaño de la casilla
@@ -119,6 +123,13 @@ namespace UCM.IAV.Navegacion
                             vertices.Add(v);
                             neighbors.Add(new List<Vertex>());
                             costs.Add(new List<float>());
+
+                            //Nos guardamos el vertice de salida
+                            if (line[j] == '*')
+                                exitVertex = v;
+
+                            else if(line[j] == 'p')
+                                Instantiate(TheseoPrefab, position, Quaternion.identity);
 
                             //Ajustamos tamaños 
                             float y = vertexObjs[id].transform.localScale.y;
@@ -256,6 +267,11 @@ namespace UCM.IAV.Navegacion
                 }
             } while (queue.Count != 0);
             return null;
+        }
+
+        public Vertex getExit()
+        {
+            return exitVertex;
         }
 
     }
