@@ -12,7 +12,6 @@ public class MovimientoAutomatico : MonoBehaviour
     List<Vertex> path;
 
     //Referencia al grafo del mapa
-    [SerializeField]
     GraphGrid graph;
 
     //Nodos relevantes
@@ -37,9 +36,11 @@ public class MovimientoAutomatico : MonoBehaviour
         //Cogemos los vertices de inicio y fin
         Vertex inicio = graph.GetNearestVertex(transform.position);
         final = graph.getExit();
-        path = graph.GetPathAstar(inicio.gameObject, final.gameObject);
+        //path = graph.GetPathAstar(inicio.gameObject, final.gameObject);
+        path = graph.GetPathBFS(inicio.gameObject, final.gameObject);
 
         //Miramos si el camino lo queremos suavizado o no 
+        smooth = false;
         if (smooth)
             path = graph.Smooth(path);
 
@@ -58,7 +59,7 @@ public class MovimientoAutomatico : MonoBehaviour
         //Movemos al jugador
         Vector3 direccion;
         direccion = objetivePos - transform.position;
-        rb.velocity = direccion * 10;
+        rb.velocity = direccion ;
 
         //Si llegamos al nodo objetivo, pasamos al siguiente
         //Hay que cambiar el margen
@@ -67,5 +68,10 @@ public class MovimientoAutomatico : MonoBehaviour
             idPath++;
             vertexObjetive = path[idPath];
         }
+    }
+
+    public void setGraph(GraphGrid g)
+    {
+        graph = g;
     }
 }

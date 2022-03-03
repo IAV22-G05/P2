@@ -129,7 +129,13 @@ namespace UCM.IAV.Navegacion
                                 exitVertex = v;
 
                             else if(line[j] == 'p')
-                                Instantiate(TheseoPrefab, position, Quaternion.identity);
+                            {
+                                position.y += 1;
+                                GameObject a = Instantiate(TheseoPrefab, position, Quaternion.identity);
+                                MovimientoAutomatico mov = a.GetComponent<MovimientoAutomatico>();
+                                mov.setGraph(this);
+                                position.y -= 1;
+                            }
 
                             //Ajustamos tamaños 
                             float y = vertexObjs[id].transform.localScale.y;
@@ -260,7 +266,7 @@ namespace UCM.IAV.Navegacion
                             if (j >= numCols || i >= numRows)
                                 continue;
                             if (i == row && j == col)
-                                continue;
+                                
                             queue.Enqueue(new Vector2(j, i));
                         }
                     }

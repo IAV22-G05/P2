@@ -6,9 +6,11 @@ public class ControlJugador : MonoBehaviour
 {
     // Start is called before the first frame update
     Rigidbody rb;
+    MovimientoAutomatico mov;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        mov = GetComponent<MovimientoAutomatico>();
     }
 
     // Update is called once per frame
@@ -26,5 +28,16 @@ public class ControlJugador : MonoBehaviour
         //Orientacion
         transform.rotation = Quaternion.LookRotation(direccion, Vector3.up);
         //transform.LookAt(direccion);
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("Ovadillo");
+            mov.enabled = true;
+        }
+        else if(Input.GetKeyUp(KeyCode.Space))
+        {
+            mov.enabled = false;
+            Debug.Log("Paco Pepe");
+        }
     }
 }
