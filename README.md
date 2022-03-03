@@ -137,7 +137,11 @@ Como su nombre indica, tendremos un laberinto representado internamente con un g
 
 En el laberinto estarán 2 agentes, Teseo (el jugador) y el Minotauro (enemigo).
 
-El jugador podrá mover por el laberinto a Teseo mediante input, pero si mantiene el espacio, se calculará el camino más óptimo
+El jugador podrá mover por el laberinto a Teseo mediante input, pero si mantiene el espacio, se calculará el camino más óptimo hacia la salida con A*, además, en esa situación, el jugador se moverá de forma automática hasta dicha salida, también podremos decidir si suavizar o no el camino pulsando "S". El camino se dibujará en la escena.
+
+Por otro lado estará el minotauro, que partirá desde el centro del laberinto. Este se moverá por los pasillos merodeando, pero cuando se cruce con el jugador, irá a perseguirlo.
+
+Cuando el jugador se choca con el minotauro, su movimiento se ralentiza.
 
 
 ## JUGADOR
@@ -400,4 +404,7 @@ Se utilizará para suavizar los caminos encontrados por A*
  	outputPath += inputPath[len(inputPath) - 1]
 
 	return outputPath
-
+	
+## REFERENCIAS
+-AI_for_Games_third_edition_2019_Ian_Millington
+-Apunters MARP 2021-2022, Alberto Verdejo.
