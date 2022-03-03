@@ -209,7 +209,7 @@ namespace UCM.IAV.Navegacion
                 j = (int)p.x;
                 if (i < 0 || j < 0)
                     continue;
-                if (i >= numRows || j >= numCols)
+                if (i >= numRows || j >= numCols) 
                     continue;
                 if (i == row && j == col)
                     continue;
