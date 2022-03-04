@@ -112,7 +112,11 @@ namespace UCM.IAV.Navegacion
                                 vertexObjs[id] = Instantiate(vertexPrefab, position, Quaternion.identity) as GameObject;
                             //Si es muro, creamos un objeto de muero
                             else
+                            {
+                                position.y += 0.5f;
                                 vertexObjs[id] = Instantiate(obstaclePrefab, position, Quaternion.identity) as GameObject;
+                                position.y -= 0.5f;
+                            }
                             //Esto es para quitar el nombre de "Clone" que pone el prefab 
                             vertexObjs[id].name = vertexObjs[id].name.Replace("(Clone)", id.ToString());
 
@@ -130,11 +134,11 @@ namespace UCM.IAV.Navegacion
 
                             else if(line[j] == 'p')
                             {
-                                position.y += 1;
+                                position.y += 1.5f;
                                 GameObject a = Instantiate(TheseoPrefab, position, Quaternion.identity);
                                 MovimientoAutomatico mov = a.GetComponent<MovimientoAutomatico>();
                                 mov.setGraph(this);
-                                position.y -= 1;
+                                position.y -= 1.5f;
                             }
 
                             //Ajustamos tamaños 
