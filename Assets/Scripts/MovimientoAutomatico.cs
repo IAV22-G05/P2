@@ -37,7 +37,8 @@ public class MovimientoAutomatico : MonoBehaviour
         Vertex inicio = graph.GetNearestVertex(transform.position);
         final = graph.getExit();
         //path = graph.GetPathAstar(inicio.gameObject, final.gameObject);
-        path = graph.GetPathBFS(inicio.gameObject, final.gameObject);
+        path = graph.GetPathBFS(final.gameObject, inicio.gameObject);
+        
 
         //Miramos si el camino lo queremos suavizado o no 
         smooth = false;
@@ -59,15 +60,25 @@ public class MovimientoAutomatico : MonoBehaviour
         //Movemos al jugador
         Vector3 direccion;
         direccion = objetivePos - transform.position;
-        rb.velocity = direccion ;
+        Debug.Log(objetivePos.ToString());
+        rb.velocity = direccion*10;
 
         //Si llegamos al nodo objetivo, pasamos al siguiente
         //Hay que cambiar el margen
-        if (transform.position == objetivePos)
+        if (transform.position.x <= objetivePos.x + 0.1
+            && transform.position.x >= objetivePos.x - 0.1
+            && transform.position.z <= objetivePos.z + 0.1
+            && transform.position.z >= objetivePos.z - 0.1)
         {
             idPath++;
             vertexObjetive = path[idPath];
+
         }
+
+        //Orientacion
+        direccion.y = 0;
+        transform.rotation = Quaternion.LookRotation(direccion, Vector3.up);
+
     }
 
     public void setGraph(GraphGrid g)

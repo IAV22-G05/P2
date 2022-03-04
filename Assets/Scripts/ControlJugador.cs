@@ -26,18 +26,16 @@ public class ControlJugador : MonoBehaviour
 
 
         //Orientacion
+        //direccion.y = 0;
         transform.rotation = Quaternion.LookRotation(direccion, Vector3.up);
-        //transform.LookAt(direccion);
 
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("Ovadillo");
             mov.enabled = true;
         }
         else if(Input.GetKeyUp(KeyCode.Space))
         {
             mov.enabled = false;
-            Debug.Log("Paco Pepe");
         }
     }
 }
