@@ -640,13 +640,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1215951688}
-  m_LocalRotation: {x: 0.17282851, y: 0.20464055, z: -0.036735833, w: 0.9627581}
-  m_LocalPosition: {x: 15.9, y: 17.1, z: -16.6}
+  m_LocalRotation: {x: 0.17660911, y: 0.029741606, z: -0.005339035, w: 0.9838172}
+  m_LocalPosition: {x: 15.9, y: 19.4, z: -16.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 20.354, y: 24, z: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 20.354, y: 3.463, z: 0}
 --- !u!1 &1574568751
 GameObject:
   m_ObjectHideFlags: 0
@@ -682,7 +682,7 @@ MonoBehaviour:
     type: 3}
   obstaclePrefab: {fileID: 100000, guid: 403c7d1fcaa50ea4e8acd406751a88fd, type: 3}
   mapsDir: Maps
-  mapName: arena.map
+  mapName: arena1.map
   get8Vicinity: 0
   cellSize: 1
   defaultCost: 1
@@ -727,16 +727,16 @@ Light:
   m_GameObject: {fileID: 1783185100}
   m_Enabled: 1
   serializedVersion: 10
-  m_Type: 1
+  m_Type: 2
   m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
-  m_Range: 10
+  m_Color: {r: 0.5283019, g: 0.39801624, b: 0.2810965, a: 1}
+  m_Intensity: 11.07
+  m_Range: 65
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -788,7 +788,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1783185100}
   m_LocalRotation: {x: 0.40821794, y: -0.23456973, z: 0.10938166, w: 0.8754261}
-  m_LocalPosition: {x: -15.1630745, y: 2.6066566, z: -1.3182259}
+  m_LocalPosition: {x: 24.6, y: 22.5, z: 19.6}
   m_LocalScale: {x: 1, y: 0.99999994, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

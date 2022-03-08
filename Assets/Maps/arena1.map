@@ -1,0 +1,24 @@
+type octile
+height 20
+width 20
+map
+TTTTTTTTTTTTT*TTTTTT
+T...............T..T
+TTTTTTTTTT...TTTT..T
+T............T.....T
+T...TTTTT....T.....T
+T...T...T....T.TT..T
+T...T...T......TT..T
+T...T...T......T...T
+T...T.........TT...T
+TTTTTTTTT......T...T
+T..............T...T
+T..........TTTTTTTTT
+T..T.........T.....T
+T..T...............T
+T..T.TTTTTT..TTT.T.T
+T..T..........TT.T.T
+T..TTTTTTTTTT.TT.T.T
+T...........T.TT.T.T
+T...........T.T....T
+TTTTTTTTTTTTTpTTTTTT

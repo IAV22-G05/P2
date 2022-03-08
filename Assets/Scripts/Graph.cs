@@ -149,123 +149,124 @@ namespace UCM.IAV.Navegacion
         public List<Vertex> GetPathAstar(GameObject srcO, GameObject dstO, Heuristic h = null)
         {
 
-            //Cogemos los nodos de inicio y final
-            Vertex start = GetNearestVertex(srcO.transform.position);
-            Vertex end = GetNearestVertex(dstO.transform.position);
-            NodeRecord current;
+            ////Cogemos los nodos de inicio y final
+            //Vertex start = GetNearestVertex(srcO.transform.position);
+            //Vertex end = GetNearestVertex(dstO.transform.position);
+            //NodeRecord current;
 
-            //Inicializa el record para el nodo de inicio
-            NodeRecord startRecord = new NodeRecord();
-            NodeRecord endRecord = new NodeRecord();
-            startRecord.node = start;
-            startRecord.connection = null;
-            startRecord.costSoFar = 0;
-            startRecord.estimatedTotalCost = EuclidDist(start, end);
+            ////Inicializa el record para el nodo de inicio
+            //NodeRecord startRecord = new NodeRecord();
+            //NodeRecord endRecord = new NodeRecord();
+            //startRecord.node = start;
+            //startRecord.connection = null;
+            //startRecord.costSoFar = 0;
+            //startRecord.estimatedTotalCost = EuclidDist(start, end);
 
-            //Inicializa las listas de abiertos y cerrados
-            List<Vertex> open = new List<Vertex>();
-            List<Vertex> closed = new List<Vertex>();
-            open.Add(startRecord.node);
-            Vertex[] neighbours;
+            ////Inicializa las listas de abiertos y cerrados
+            //List<Vertex> open = new List<Vertex>();
+            //List<Vertex> closed = new List<Vertex>();
+            //open.Add(startRecord.node);
+            //Vertex[] neighbours;
 
-            //Itera procesando cada nodo
-            while (open.Count > 0)
-            {
-                //Encuentra el menor elemento en la lista de abiertos (usando estimatedTotalCost).
-                current = open.
-                //Si es el nodo objetivo, termina el bucle.
-                if (current.node == end)
-                    break;
+            ////Itera procesando cada nodo
+            //while (open.Count > 0)
+            //{
+            //    //Encuentra el menor elemento en la lista de abiertos (usando estimatedTotalCost).
+            //    current = open.
+            //    //Si es el nodo objetivo, termina el bucle.
+            //    if (current.node == end)
+            //        break;
 
-                //Si no obtiene sus conexiones a los siguientes nodos.
-                neighbours = GetNeighbours(current.node);
+            //    //Si no obtiene sus conexiones a los siguientes nodos.
+            //    neighbours = GetNeighbours(current.node);
 
-                //Itera por cada conexion
-                foreach (Vertex connection in neighbours)
-                {
-                    // Obtiene el coste estimado para el nodo final.
-                    end = connection.getToNode(); //no se traducir esto
-                    float endNodeCost = current.costSoFar + connection.getCost(); //esto tampoco
-                    float endNodeHeuristic;
+            //    //Itera por cada conexion
+            //    foreach (Vertex connection in neighbours)
+            //    {
+            //        // Obtiene el coste estimado para el nodo final.
+            //        end = connection.getToNode(); //no se traducir esto
+            //        float endNodeCost = current.costSoFar + connection.getCost(); //esto tampoco
+            //        float endNodeHeuristic;
 
-                    // Si el nodo está cerrado hay que saltarlo o eliminarlo de la lista de cerrados.
-                    if (closed.Contains(end))
-                    {
-                        // Encuentra el record para el nodo cerrado.
-                        endRecord.node = closed.Find(end); //me vacila
+            //        // Si el nodo está cerrado hay que saltarlo o eliminarlo de la lista de cerrados.
+            //        if (closed.Contains(end))
+            //        {
+            //            // Encuentra el record para el nodo cerrado.
+            //            endRecord.node = closed.Find(end); //me vacila
 
-                        // Si no encuentra una ruta más corta salta el nodo.
-                        if (endRecord.costSoFar <= endNodeCost)
-                            continue;
+            //            // Si no encuentra una ruta más corta salta el nodo.
+            //            if (endRecord.costSoFar <= endNodeCost)
+            //                continue;
 
-                        // Si la encuentra lo elimina de la lista de cerrados.
-                        closed.Remove(endRecord.node);
+            //            // Si la encuentra lo elimina de la lista de cerrados.
+            //            closed.Remove(endRecord.node);
 
-                        // Usa los antiguos valores del nodo para calcular su heuristica sin llamar a la funcion heuristica.
-                        endNodeHeuristic = endRecord.estimatedTotalCost - endRecord.costSoFar;
-                    }
-                    // Salta el nodo si está abierto y no encuentra una mejor ruta.
-                    else if (open.Contains(end))
-                    {
-                        // Encuentra el record en la lista de abiertos para el nodo final.
-                        endRecord = open.Find(end); //no funciona el find
+            //            // Usa los antiguos valores del nodo para calcular su heuristica sin llamar a la funcion heuristica.
+            //            endNodeHeuristic = endRecord.estimatedTotalCost - endRecord.costSoFar;
+            //        }
+            //        // Salta el nodo si está abierto y no encuentra una mejor ruta.
+            //        else if (open.Contains(end))
+            //        {
+            //            // Encuentra el record en la lista de abiertos para el nodo final.
+            //            endRecord = open.Find(end); //no funciona el find
 
-                        // Si la ruta no es mejor, lo salta.
-                        if (endRecord.costSoFar <= endNodeCost)
-                            continue;
+            //            // Si la ruta no es mejor, lo salta.
+            //            if (endRecord.costSoFar <= endNodeCost)
+            //                continue;
 
-                        // Calcula su heuristica.
-                        //float endNodeHeuristic = endRecord.cost - endRecord.costSoFar; //no se si es esta
-                        endNodeHeuristic = endRecord.cost - endRecord.costSoFar;
-                    }
-                    // Si no, tiene un nodo no visitado, asi que guarda su record.
-                    else
-                    {
-                        endRecord = new NodeRecord();
+            //            // Calcula su heuristica.
+            //            //float endNodeHeuristic = endRecord.cost - endRecord.costSoFar; //no se si es esta
+            //            endNodeHeuristic = endRecord.cost - endRecord.costSoFar;
+            //        }
+            //        // Si no, tiene un nodo no visitado, asi que guarda su record.
+            //        else
+            //        {
+            //            endRecord = new NodeRecord();
 
-                        endRecord.node = end;
+            //            endRecord.node = end;
 
-                        // Calcula el valor heuristico usando la función, ya que no tiene un record que usar.
-                        endNodeHeuristic = heuristic.estimate(endNode);
-                    }
+            //            // Calcula el valor heuristico usando la función, ya que no tiene un record que usar.
+            //            endNodeHeuristic = heuristic.estimate(endNode);
+            //        }
 
-                    // Actualiza el coste, el estimado y la conexión del nodo.
-                    endRecord.cost = endNodeCost;
+            //        // Actualiza el coste, el estimado y la conexión del nodo.
+            //        endRecord.cost = endNodeCost;
 
-                    endRecord.connection = connection;
+            //        endRecord.connection = connection;
 
-                    endRecord.estimatedTotalCost = endNodeCost + endNodeHeuristic;
+            //        endRecord.estimatedTotalCost = endNodeCost + endNodeHeuristic;
 
-                    // Y lo añade a la lista de abiertos.
-                    if (!open.Contains(end))
-                        open.Add(endRecord.node);
-                }
+            //        // Y lo añade a la lista de abiertos.
+            //        if (!open.Contains(end))
+            //            open.Add(endRecord.node);
+            //    }
 
-                // Añade el nodo a la lista de cerrados y lo añade a la de abiertos.
-                open.Remove(current.node);
-                closed.Add(current.node);
+            //    // Añade el nodo a la lista de cerrados y lo añade a la de abiertos.
+            //    open.Remove(current.node);
+            //    closed.Add(current.node);
 
-                if (current.node != goal)
-                {
-                    // No hay más nodos y no ha encontrado el final así que no hay solución.
-                    return null;
-                }
-                else
-                {
-                    // Compila la lista de conexiones en el camino.
-                    path = [];
-                }
+            //    if (current.node != goal)
+            //    {
+            //        // No hay más nodos y no ha encontrado el final así que no hay solución.
+            //        return null;
+            //    }
+            //    else
+            //    {
+            //        // Compila la lista de conexiones en el camino.
+            //        path = [];
+            //    }
 
-                // Recorre el camino hacia atrás acumulando conexiones.
-                while (current.node != start)
-                    path += current.connection;
+            //    // Recorre el camino hacia atrás acumulando conexiones.
+            //    while (current.node != start)
+            //        path += current.connection;
 
-                current = current.connection.getFromNode();
+            //    current = current.connection.getFromNode();
 
-                // Da la vuelta al camino y lo devuelve.
-                return BuildPath(path);
-                return new List<Vertex>();
-            }
+            //    // Da la vuelta al camino y lo devuelve.
+            //    return BuildPath(path);
+            //    return new List<Vertex>();
+            //}
+            return new List<Vertex>();
         }
 
         public List<Vertex> Smooth(List<Vertex> path)
