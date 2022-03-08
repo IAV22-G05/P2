@@ -23,6 +23,7 @@ namespace UCM.IAV.Navegacion
 
     public class GraphGrid : Graph
     {
+        public GameObject TheseoPrefab;
         public GameObject obstaclePrefab;
         public string mapsDir = "Maps"; // Directorio por defecto
         public string mapName = "arena.map"; // Fichero por defecto
@@ -37,6 +38,8 @@ namespace UCM.IAV.Navegacion
         int numRows;
         GameObject[] vertexObjs;
         bool[,] mapVertices;
+
+        Vertex exitVertex;
 
         //Convertidor de posicion a id para las listas
         private int GridToId(int x, int y)
@@ -92,8 +95,9 @@ namespace UCM.IAV.Navegacion
                         {
                             //Si lees ".", es una casilla de suelo
                             bool isGround = true;
-                            if (line[j] != '.')
+                            if (line[j] == 'T')
                                 isGround = false;
+                          
                             mapVertices[i, j] = isGround;
 
                             //Tamaño de la casilla
@@ -108,7 +112,11 @@ namespace UCM.IAV.Navegacion
                                 vertexObjs[id] = Instantiate(vertexPrefab, position, Quaternion.identity) as GameObject;
                             //Si es muro, creamos un objeto de muero
                             else
+                            {
+                                position.y += 0.5f;
                                 vertexObjs[id] = Instantiate(obstaclePrefab, position, Quaternion.identity) as GameObject;
+                                position.y -= 0.5f;
+                            }
                             //Esto es para quitar el nombre de "Clone" que pone el prefab 
                             vertexObjs[id].name = vertexObjs[id].name.Replace("(Clone)", id.ToString());
 
@@ -119,6 +127,19 @@ namespace UCM.IAV.Navegacion
                             vertices.Add(v);
                             neighbors.Add(new List<Vertex>());
                             costs.Add(new List<float>());
+
+                            //Nos guardamos el vertice de salida
+                            if (line[j] == '*')
+                                exitVertex = v;
+
+                            else if(line[j] == 'p')
+                            {
+                                position.y += 1.5f;
+                                GameObject a = Instantiate(TheseoPrefab, position, Quaternion.identity);
+                                MovimientoAutomatico mov = a.GetComponent<MovimientoAutomatico>();
+                                mov.setGraph(this);
+                                position.y -= 1.5f;
+                            }
 
                             //Ajustamos tamaños 
                             float y = vertexObjs[id].transform.localScale.y;
@@ -198,7 +219,7 @@ namespace UCM.IAV.Navegacion
                 j = (int)p.x;
                 if (i < 0 || j < 0)
                     continue;
-                if (i >= numRows || j >= numCols)
+                if (i >= numRows || j >= numCols) 
                     continue;
                 if (i == row && j == col)
                     continue;
@@ -249,7 +270,7 @@ namespace UCM.IAV.Navegacion
                             if (j >= numCols || i >= numRows)
                                 continue;
                             if (i == row && j == col)
-                                continue;
+                                
                             queue.Enqueue(new Vector2(j, i));
                         }
                     }
@@ -270,5 +291,10 @@ namespace UCM.IAV.Navegacion
             } while (!mapVertices[(int)pos.x, (int)pos.y]);
             return v;
         }
+        public Vertex getExit()
+        {
+            return exitVertex;
+        }
+
     }
 }
