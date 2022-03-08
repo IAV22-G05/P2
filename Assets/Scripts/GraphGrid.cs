@@ -279,6 +279,18 @@ namespace UCM.IAV.Navegacion
             return null;
         }
 
+        public Vertex getRandomVertex()
+        {
+            Vertex v = null;
+            int r = 0;
+            Vector2 pos;
+            do
+            {
+                r = UnityEngine.Random.Range(0, vertices.Count);
+                pos = IdToGrid(r);
+            } while (!mapVertices[(int)pos.x, (int)pos.y]);
+            return v;
+        }
         public Vertex getExit()
         {
             return exitVertex;
