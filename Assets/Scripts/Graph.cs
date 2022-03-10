@@ -32,6 +32,22 @@ namespace UCM.IAV.Navegacion
             public Vertex connection;
             public float costSoFar;
             public float estimatedTotalCost;
+
+            public static NodeRecord operator <(NodeRecord a, NodeRecord b)
+            {
+                if (a.estimatedTotalCost < b.estimatedTotalCost)
+                    return a;
+                else
+                    return b;
+            }
+
+            public static NodeRecord operator >(NodeRecord a, NodeRecord b)
+            {
+                if (a.estimatedTotalCost > b.estimatedTotalCost)
+                    return a;
+                else
+                    return b;
+            }
         }
 
         public GameObject vertexPrefab;
@@ -143,6 +159,7 @@ namespace UCM.IAV.Navegacion
                     s.Push(n);
                 }
             }
+           
             return new List<Vertex>();
         }
 
@@ -156,67 +173,67 @@ namespace UCM.IAV.Navegacion
 
             //Inicializa el record para el nodo de inicio
             NodeRecord startRecord = new NodeRecord();
-            NodeRecord endRecord = new NodeRecord();
+            NodeRecord closedRecord = new NodeRecord();
+            NodeRecord openRecord = new NodeRecord();
             startRecord.node = start;
             startRecord.connection = null;
             startRecord.costSoFar = 0;
-            startRecord.estimatedTotalCost = EuclidDist(start, end);
+            startRecord.estimatedTotalCost = h.Invoke(start, end);
 
             //Inicializa las listas de abiertos y cerrados
-            List<Vertex> open = new List<Vertex>();
-            List<Vertex> closed = new List<Vertex>();
-            open.Add(startRecord.node);
-            Vertex[] neighbours;
+            List<NodeRecord> open = new List<NodeRecord>();
+            List<NodeRecord> closed = new List<NodeRecord>();
+            open.Add(startRecord);
+            List<Edge> connections;
+            Vertex endNode;
+            float endNodeCost;
+            float endNodeHeuristic;
 
             //Itera procesando cada nodo
             while (open.Count > 0)
             {
+                open.Sort();
                 //Encuentra el menor elemento en la lista de abiertos (usando estimatedTotalCost).
-                current = open.
+                current = open[0];
                 //Si es el nodo objetivo, termina el bucle.
                 if (current.node == end)
                     break;
 
                 //Si no obtiene sus conexiones a los siguientes nodos.
-                neighbours = GetNeighbours(current.node);
+                connections = current.node.vecinos;
 
                 //Itera por cada conexion
-                foreach (Vertex connection in neighbours)
+                foreach (Edge connection in connections)
                 {
                     // Obtiene el coste estimado para el nodo final.
-                    end = connection.getToNode(); //no se traducir esto
-                    float endNodeCost = current.costSoFar + connection.getCost(); //esto tampoco
-                    float endNodeHeuristic;
+                    endNode = connection.vertex;
+                    endNodeCost = current.costSoFar + connection.cost;
 
+                    closedRecord = FindInClosed(closed, endNode);
+                    openRecord = FindInOpen(open, endNode);
                     // Si el nodo está cerrado hay que saltarlo o eliminarlo de la lista de cerrados.
-                    if (closed.Contains(end))
+                    if (closedRecord.node == endNode)
                     {
-                        // Encuentra el record para el nodo cerrado.
-                        endRecord.node = closed.Find(end); //me vacila
-
                         // Si no encuentra una ruta más corta salta el nodo.
-                        if (endRecord.costSoFar <= endNodeCost)
+                        if (closedRecord.costSoFar <= endNodeCost)
                             continue;
 
                         // Si la encuentra lo elimina de la lista de cerrados.
-                        closed.Remove(endRecord.node);
+                        closed.Remove(closedRecord);
 
                         // Usa los antiguos valores del nodo para calcular su heuristica sin llamar a la funcion heuristica.
-                        endNodeHeuristic = endRecord.estimatedTotalCost - endRecord.costSoFar;
+                        endNodeHeuristic = closedRecord.estimatedTotalCost - closedRecord.costSoFar;
                     }
                     // Salta el nodo si está abierto y no encuentra una mejor ruta.
-                    else if (open.Contains(end))
+                    else if (openRecord.node == endNode)
                     {
-                        // Encuentra el record en la lista de abiertos para el nodo final.
-                        endRecord = open.Find(end); //no funciona el find
-
                         // Si la ruta no es mejor, lo salta.
-                        if (endRecord.costSoFar <= endNodeCost)
+                        if (openRecord.costSoFar <= endNodeCost)
                             continue;
 
                         // Calcula su heuristica.
                         //float endNodeHeuristic = endRecord.cost - endRecord.costSoFar; //no se si es esta
-                        endNodeHeuristic = endRecord.cost - endRecord.costSoFar;
+                        endNodeHeuristic = openRecord.estimatedTotalCost - openRecord.costSoFar;
                     }
                     // Si no, tiene un nodo no visitado, asi que guarda su record.
                     else
@@ -241,20 +258,21 @@ namespace UCM.IAV.Navegacion
                         open.Add(endRecord.node);
                 }
 
-                // Añade el nodo a la lista de cerrados y lo añade a la de abiertos.
+                // Quita el nodo de la lista de cerrados y lo añade a la de abiertos.
                 open.Remove(current.node);
                 closed.Add(current.node);
 
-                if (current.node != goal)
-                {
-                    // No hay más nodos y no ha encontrado el final así que no hay solución.
-                    return null;
-                }
-                else
-                {
-                    // Compila la lista de conexiones en el camino.
-                    path = [];
-                }
+            }
+            
+            if (current.node != goal)
+            {
+                // No hay más nodos y no ha encontrado el final así que no hay solución.
+                return null;
+            }
+            else
+            {
+                // Compila la lista de conexiones en el camino.
+                path = [];
 
                 // Recorre el camino hacia atrás acumulando conexiones.
                 while (current.node != start)
@@ -265,7 +283,27 @@ namespace UCM.IAV.Navegacion
                 // Da la vuelta al camino y lo devuelve.
                 return BuildPath(path);
                 return new List<Vertex>();
+            }            
+        }
+
+        private NodeRecord FindInClosed(List<NodeRecord> closed, Vertex node)
+        {
+            for(int i = 0; i < closed.Count; ++i)
+            {
+                if (closed[i].node == node)
+                    return closed[i];
             }
+            return new NodeRecord();
+        }
+
+        private NodeRecord FindInOpen(List<NodeRecord> open, Vertex node)
+        {
+            for (int i = 0; i < open.Count; ++i)
+            {
+                if (open[i].node == node)
+                    return open[i];
+            }
+            return new NodeRecord();
         }
 
         public List<Vertex> Smooth(List<Vertex> path)
