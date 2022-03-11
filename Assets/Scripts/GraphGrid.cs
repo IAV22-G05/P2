@@ -20,6 +20,7 @@ namespace UCM.IAV.Navegacion
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using UCM.IAV.Movimiento;
 
     public class GraphGrid : Graph
     {
