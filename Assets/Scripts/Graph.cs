@@ -326,10 +326,21 @@ namespace UCM.IAV.Navegacion
                 // Ray cast.
                 Vertex fromPt = outputPath[outputPath.Count - 1];
                 Vertex toPt = path[inputIndex];
-                if(!Physics.Raycast(fromPt.gameObject.transform.position, toPt.gameObject.transform.position))
+                Vector3 fromPos = fromPt.gameObject.transform.position;
+                Vector3 toPos = toPt.gameObject.transform.position;
+                fromPos.y += 1;
+                toPos.y += 1;
+
+                Vector3 dir = toPos - fromPos;
+                //float distance = dir.magnitude;
+                float distance = Vector3.Distance(fromPos, toPos);
+
+                if(!Physics.Raycast(fromPos, dir, distance))
                 {
                     // Añade el último nodo que superó el ray cast al camino de salida.
                     outputPath.Add(path[inputIndex - 1]);
+
+                    Debug.Log("Me cago en mi vieja deja de chocarte");
                 }
 
                 // Considera el siguiente nodo.
