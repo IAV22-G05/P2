@@ -70,6 +70,14 @@ namespace UCM.IAV.Movimiento
                 mov.enabled = false;
             }
 
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                mov.setSmooth(!mov.getSmooth());
+                //Debug.Log("SUUUU");
+                Debug.Log(mov.getSmooth());
+
+            }
+
 
             return direccion;
         }

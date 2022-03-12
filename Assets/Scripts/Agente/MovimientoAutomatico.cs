@@ -13,7 +13,7 @@ namespace UCM.IAV.Movimiento
     public class MovimientoAutomatico : ComportamientoAgente
     {
         //Indica si queremos camino suavizado o no
-        bool smooth;
+        bool smooth = false;
 
         //Camino a seguir
         List<Vertex> path;
@@ -33,10 +33,14 @@ namespace UCM.IAV.Movimiento
         Rigidbody rb;
         Animator anim;
 
+        //LineRenderer
+        LineRenderer line;
+
         void Start()
         {
             rb = GetComponent<Rigidbody>();
             anim = GetComponent<Animator>();
+            line = GetComponent<LineRenderer>();
         }
 
 
@@ -51,7 +55,6 @@ namespace UCM.IAV.Movimiento
 
 
             //Miramos si el camino lo queremos suavizado o no 
-            smooth = false;
             if (smooth)
                 path = graph.Smooth(path);
 
@@ -60,6 +63,34 @@ namespace UCM.IAV.Movimiento
 
             //el nodo objetivo es el siguiente al que tiene que ir el jugador
             vertexObjetive = path[idPath];
+
+            //Dibujamos el camino
+            if(path.Count>=2)
+            {
+                int nextIndex = 0;
+                    Debug.Log("Carballo");
+                line.numPositions = path.Count;
+                line.SetWidth(0.1f, 0.1f);
+
+                //Primera posicion
+                Vertex next = path[nextIndex];
+                Vector3 pos = next.gameObject.transform.position;
+                pos.y += 1;
+                line.SetPosition(nextIndex, inicio.gameObject.transform.position);
+                foreach (Vertex v in path)
+                {
+                    nextIndex++;
+                    next = path[nextIndex];
+                    pos = next.gameObject.transform.position;
+                    pos.y += 1;
+                    line.SetPosition(nextIndex, pos);
+                }
+            }
+            
+        }
+        private void OnDisable()
+        {
+            line.numPositions = 0;
         }
 
         public override Direccion GetDireccion()
@@ -75,12 +106,13 @@ namespace UCM.IAV.Movimiento
             //Guardamos pos del vertice
             Vector3 objetivePos = vertexObjetive.gameObject.transform.position;
             Vector3 actualVertexPos = vertexActual.gameObject.transform.position;
+            Vector3 actualVertexPos1 = transform.position;
 
             //Movemos al jugador
             Direccion direccion =  new Direccion();
-            direccion.lineal = objetivePos - actualVertexPos;
+            direccion.lineal = objetivePos - actualVertexPos1;
             direccion.lineal = direccion.lineal.normalized;
-            Debug.Log(objetivePos.ToString());
+            //Debug.Log(direccion.lineal);
 
             //Si llegamos al nodo objetivo, pasamos al siguiente
             //Hay que cambiar el margen
@@ -94,6 +126,9 @@ namespace UCM.IAV.Movimiento
                 idPath++;
                 vertexObjetive = path[idPath];
             }
+
+            //ME DICE JOSSEDA QUE LO CAMBIE CON LA MAGNITUD DE LA DISTANCIA TIENE RAZON
+
 
             //Orientacion
             direccion.lineal.y = 0;
@@ -116,5 +151,15 @@ namespace UCM.IAV.Movimiento
         {
             graph = g;
         }
+
+        public void setSmooth(bool s)
+        {
+            smooth = s;
+        }
+        public bool getSmooth()
+        {
+            return smooth;
+        }
     }
 }
+
