@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Un montículo binario, ¡útil para ordenar datos e implementar colas de prioridad!
@@ -14,6 +15,8 @@ public class BinaryHeap<T> : ICollection<T> where T : IComparable<T>
     private int inUse = 0;
     private int size = DEFAULT_SIZE;
     private bool isInternallySorted;
+
+    public T Top => data[0];
 
     // Propiedades
     /// <summary>
@@ -163,20 +166,20 @@ public class BinaryHeap<T> : ICollection<T> where T : IComparable<T>
         isInternallySorted = true;
     }
 
-    private static int Parent(int index)
     //Función auxiliar que calcula el padre de un nodo
+    private static int Parent(int index)
     {
         return (index - 1) >> 1;
     }
 
-    private static int Child1(int index)
     //Función auxiliar que calcula el primer hijo de un nodo
+    private static int Child1(int index)
     {
         return (index << 1) + 1;
     }
 
-    private static int Child2(int index)
     //Función auxiliar que calcula el segundo hijo de un nodo
+    private static int Child2(int index)
     {
         return (index << 1) + 2;
     }
@@ -203,7 +206,8 @@ public class BinaryHeap<T> : ICollection<T> where T : IComparable<T>
     public bool Contains(T item)
     {
         EnsureSort();
-        return Array.BinarySearch<T>(data, 0, inUse, item) >= 0;
+        return data.Contains(item);
+        //return Array.BinarySearch<T>(data, 0, inUse, item) >= 0;
     }
 
     /// <summary>
@@ -235,9 +239,16 @@ public class BinaryHeap<T> : ICollection<T> where T : IComparable<T>
         EnsureSort();
         int i = Array.BinarySearch<T>(data, 0, inUse, item);
         if (i < 0) return false;
-        Array.Copy(data, i + 1, data, i, inUse - i);
-        data[inUse] = default(T);
+        Array.Copy(data, i + 1, data, i, inUse - i - 1);
         inUse--;
+        data[inUse] = default(T);
         return true;
+    }
+
+    public T Find(T item)
+    {
+        int i = Array.BinarySearch<T>(data, 0, inUse, item);
+        if (i < 0) return default(T);
+        return data[i];
     }
 }

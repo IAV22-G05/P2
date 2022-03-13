@@ -17,23 +17,52 @@ namespace UCM.IAV.Navegacion
 {
     using UnityEngine;
     using System.Collections.Generic;
-    
+    using System;
+
     // Puntos representativos o vértice (común a todos los esquemas de división, o a la mayoría de ellos)
     [System.Serializable]
-    public class Vertex : MonoBehaviour
+    public class Vertex : MonoBehaviour, IComparable<Vertex>
     {
         /// <summary>
         /// Identificador del vértice 
         /// </summary>
         public int id;
 
-        /// <summary>
-        /// Vecinos del vértice
-        /// </summary>
-        public List<Edge> vecinos;
+        public float cost;
 
-        // Vértice previo
-        [HideInInspector]
-        public Vertex prev;
+        public int CompareTo(object obj)
+        {
+            if (obj == null) return 1;
+
+            Vertex other = obj as Vertex;
+            if (other != null)
+                return this.cost.CompareTo(other.cost);
+            else
+                throw new ArgumentException("Object is not a Vertex");
+        }
+
+        public int CompareTo(Vertex other)
+        {
+            return (int)(cost - other.cost);
+        }
+
+        public override bool Equals(object obj)
+        {
+            Vertex other = obj as Vertex;
+            if (other != null)
+                return id == other.id;
+            else
+                return false;
+        }
+
+        public bool Equals(Vertex other)
+        {
+            return other.id == id;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.GetHashCode();
+        }
     }
 }

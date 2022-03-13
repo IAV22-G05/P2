@@ -51,7 +51,7 @@ namespace UCM.IAV.Movimiento
             vertexActual = inicio;
             final = graph.getExit();
             //path = graph.GetPathAstar(inicio.gameObject, final.gameObject);
-            path = graph.GetPathBFS(final.gameObject, inicio.gameObject);
+            path = graph.GetPathAstar(final.gameObject, inicio.gameObject, graph.EuclidDist);
 
 
             //Miramos si el camino lo queremos suavizado o no 
@@ -69,7 +69,7 @@ namespace UCM.IAV.Movimiento
             {
                 int nextIndex = 0;
                     Debug.Log("Carballo");
-                line.numPositions = path.Count;
+                line.positionCount = path.Count;
                 line.SetWidth(0.1f, 0.1f);
 
                 //Primera posicion
@@ -90,7 +90,7 @@ namespace UCM.IAV.Movimiento
         }
         private void OnDisable()
         {
-            line.numPositions = 0;
+            line.positionCount = 0;
         }
 
         public override Direccion GetDireccion()
