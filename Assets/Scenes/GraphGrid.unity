@@ -383,7 +383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   graph: {fileID: 1574568752}
-  algorithm: 0
+  algorithm: 2
   smoothPath: 0
   vertexTag: Vertex
   obstacleTag: Wall

@@ -18,6 +18,7 @@ namespace UCM.IAV.Navegacion
 
     using UnityEngine;
     using System.Collections.Generic;
+    using static UCM.IAV.Navegacion.Graph;
 
     // Posibles algoritmos para buscar caminos en grafos
     public enum TesterGraphAlgorithm
@@ -63,7 +64,7 @@ namespace UCM.IAV.Navegacion
             dstObj = GetNodeFromScreen(Input.mousePosition);
 
             // Con la barra espaciadora se activa la búsqueda del camino mínimo
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Return))
             {
                 
                 // Si hay ya camino calculado
@@ -77,8 +78,8 @@ namespace UCM.IAV.Navegacion
                 //Elegimos con que algoritmo queremos calcular el camino
                 switch (algorithm)
                 {
-                    case TesterGraphAlgorithm.ASTAR:
-                        path = graph.GetPathAstar(srcObj, dstObj, null); // Se pasa la heurística
+                    case TesterGraphAlgorithm.ASTAR:                        
+                        path = graph.GetPathAstar(srcObj, dstObj, graph.EuclidDist); // Se pasa la heurística
                         break;
                     default:
                     case TesterGraphAlgorithm.BFS: 
