@@ -522,7 +522,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 2d0e97e9147f6334e84d5a31b6bac7fd, type: 2}
-  - {fileID: 2100000, guid: 546e1d6329b8f814ea3279a202bec7e0, type: 2}
+  - {fileID: 2100000, guid: 35f15950dcdc29341b2f1e03d05c7457, type: 2}
   - {fileID: 2100000, guid: 4d0e3901d1d6f684c896e70fd35a06f5, type: 2}
   - {fileID: 2100000, guid: 0d0ccc0461f9e9e42b30db9597ae9faa, type: 2}
   - {fileID: 2100000, guid: f907ab107088470458434e4dd335726f, type: 2}
@@ -1810,11 +1810,12 @@ GameObject:
   - component: {fileID: 5752203864169177385}
   - component: {fileID: -2006209089574696171}
   - component: {fileID: -6900594491068912986}
+  - component: {fileID: -5639920102182046074}
   - component: {fileID: 2520688308994357001}
+  - component: {fileID: 6930933567146220553}
   - component: {fileID: 8835405198662146800}
-  - component: {fileID: -7184485756727420794}
   m_Layer: 0
-  m_Name: MinotauroSinbad
+  m_Name: TheseoSinbad 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1882,8 +1883,23 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.4833117, y: 8.877678, z: 3.03}
-  m_Center: {x: -0.016041279, y: -0.5351181, z: 0.33}
+  m_Size: {x: 1.963841, y: 8.877682, z: 1.4846158}
+  m_Center: {x: -0.09842288, y: -0.5351183, z: 0.121814705}
+--- !u!114 &-5639920102182046074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4833073928106510503}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc17ad5ceec15d9498d9f63a447804b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  peso: 1
+  prioridad: 1
+  objetivo: {fileID: 0}
 --- !u!114 &2520688308994357001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1906,6 +1922,21 @@ MonoBehaviour:
   velocidad: {x: 0, y: 0, z: 0}
   rotacion: 0
   orientacion: 0
+--- !u!114 &6930933567146220553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4833073928106510503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e16b1b4970896d40a258aadd14a35dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  peso: 1
+  prioridad: 1
+  objetivo: {fileID: 0}
 --- !u!120 &8835405198662146800
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -2004,22 +2035,6 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &-7184485756727420794
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4833073928106510503}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b1549dc59cae394086ee9d1660b1457, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  peso: 1
-  prioridad: 1
-  objetivo: {fileID: 0}
-  tiempoElegir: 10
 --- !u!1 &5015097807748567389
 GameObject:
   m_ObjectHideFlags: 0

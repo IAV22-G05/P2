@@ -25,6 +25,7 @@ namespace UCM.IAV.Navegacion
     public class GraphGrid : Graph
     {
         public GameObject TheseoPrefab;
+        public GameObject MinotaurPrefab;
         public GameObject obstaclePrefab;
         public string mapsDir = "Maps"; // Directorio por defecto
         public string mapName = "arena.map"; // Fichero por defecto
@@ -133,12 +134,22 @@ namespace UCM.IAV.Navegacion
                             if (line[j] == '*')
                                 exitVertex = v;
 
+                            //Theseo
                             else if(line[j] == 'p')
                             {
                                 position.y += 1.5f;
                                 GameObject a = Instantiate(TheseoPrefab, position, Quaternion.identity);
                                 MovimientoAutomatico mov = a.GetComponent<MovimientoAutomatico>();
                                 mov.setGraph(this);
+                                position.y -= 1.5f;
+                            }
+
+                            else if(line[j] == 'M')
+                            {
+                                position.y += 1.5f;
+                                GameObject a = Instantiate(MinotaurPrefab, position, Quaternion.identity);
+                                MerodeoMinotauro mer = a.GetComponent<MerodeoMinotauro>();
+                                mer.setGraph(this);
                                 position.y -= 1.5f;
                             }
 
@@ -238,8 +249,8 @@ namespace UCM.IAV.Navegacion
         public override Vertex GetNearestVertex(Vector3 position)
         {
             //Obtenemos el vertice de la posicion
-            int col = (int)(position.x / cellSize);
-            int row = (int)(position.z / cellSize);
+            int col = (int)Math.Round(position.x / cellSize);
+            int row = (int)Math.Round(position.z / cellSize);
             Vector2 p = new Vector2(col, row);
 
             //Creamos una lista de posiciones (nodos) explorados
@@ -289,7 +300,9 @@ namespace UCM.IAV.Navegacion
             {
                 r = UnityEngine.Random.Range(0, vertices.Count);
                 pos = IdToGrid(r);
+                v = vertices[r];
             } while (!mapVertices[(int)pos.x, (int)pos.y]);
+
             return v;
         }
         public Vertex getExit()
