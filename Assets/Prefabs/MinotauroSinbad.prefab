@@ -1809,10 +1809,10 @@ GameObject:
   - component: {fileID: 5213294307218149917}
   - component: {fileID: 5752203864169177385}
   - component: {fileID: -2006209089574696171}
-  - component: {fileID: -6900594491068912986}
   - component: {fileID: 2520688308994357001}
   - component: {fileID: 8835405198662146800}
   - component: {fileID: -7184485756727420794}
+  - component: {fileID: -3517802010056802077}
   m_Layer: 0
   m_Name: MinotauroSinbad
   m_TagString: Untagged
@@ -1871,19 +1871,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 100
   m_CollisionDetection: 0
---- !u!65 &-6900594491068912986
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4833073928106510503}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3.4833117, y: 8.877678, z: 3.03}
-  m_Center: {x: -0.016041279, y: -0.5351181, z: 0.33}
 --- !u!114 &2520688308994357001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2020,6 +2007,20 @@ MonoBehaviour:
   prioridad: 1
   objetivo: {fileID: 0}
   tiempoElegir: 10
+--- !u!136 &-3517802010056802077
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4833073928106510503}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.81
+  m_Height: 5.74
+  m_Direction: 1
+  m_Center: {x: -0, y: -0.36, z: 0}
 --- !u!1 &5015097807748567389
 GameObject:
   m_ObjectHideFlags: 0
