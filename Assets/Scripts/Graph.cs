@@ -38,6 +38,7 @@ namespace UCM.IAV.Navegacion
         // Used for getting path in frames
         public List<Vertex> path;
         //public bool isFinished;
+        private Vertex minotauroVertex;
 
         public virtual void Start()
         {
@@ -178,7 +179,7 @@ namespace UCM.IAV.Navegacion
                 foreach(Vertex v in neighbours)
                 {
                     tentativeGScore = gScore[current.id] +  FindCost(current, v);
-                    if(tentativeGScore < gScore[v.id])
+                    if(tentativeGScore < gScore[v.id] && v != minotauroVertex)
                     {
                         previous[v.id] = current.id;
                         gScore[v.id] = tentativeGScore;
@@ -282,8 +283,9 @@ namespace UCM.IAV.Navegacion
                 costs[last.id][i] = 1;
 
             for (int i = 0; i < costs[next.id].Count; ++i)
-                costs[next.id][i] = 50000;
+                costs[next.id][i] = 5;
 
+            minotauroVertex = next;
         }
     }
 }
