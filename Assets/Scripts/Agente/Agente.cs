@@ -89,6 +89,7 @@ namespace UCM.IAV.Movimiento {
         [Tooltip("Cuerpo rígido.")]
         private Rigidbody cuerpoRigido;
 
+        bool ralentiza = false;
         /// <summary>
         /// Al comienzo, se inicialian algunas variables
         /// </summary>
@@ -125,6 +126,9 @@ namespace UCM.IAV.Movimiento {
             // La opción por defecto sería usar ForceMode.Force, pero eso implicaría que el comportamiento de dirección tuviese en cuenta la masa a la hora de calcular la aceleración que se pide
             //cuerpoRigido.AddForce(direccion.lineal, ForceMode.Acceleration);
             cuerpoRigido.velocity = direccion.lineal;
+
+            if(ralentiza)
+                cuerpoRigido.velocity /= 5;
 
             // Limitamos la aceleración angular al máximo que acepta este agente (aunque normalmente vendrá ya limitada)
             if (direccion.angular > aceleracionAngularMax)
@@ -172,6 +176,9 @@ namespace UCM.IAV.Movimiento {
             // Limito la velocidad lineal antes de empezar
             if (velocidad.magnitude > velocidadMax)
                 velocidad= velocidad.normalized * velocidadMax;
+
+            if (ralentiza)
+                velocidad /= 2;
 
             // Limito la velocidad angular antes de empezar
             if (rotacion > rotacionMax)
@@ -221,6 +228,8 @@ namespace UCM.IAV.Movimiento {
             velocidad += direccion.lineal * Time.deltaTime;
             rotacion += direccion.angular * Time.deltaTime;
 
+            if(ralentiza)
+                velocidad /= 2;
             // Opcional: Esto es para actuar con contundencia si nos mandan parar (no es muy realista)
             //if (direccion.angular == 0.0f) 
             //    rotacion = 0.0f; 
@@ -306,6 +315,18 @@ namespace UCM.IAV.Movimiento {
             vector.x = Mathf.Sin(orientacion * Mathf.Deg2Rad) * 1.0f; //  * 1.0f se añade para asegurar que el tipo es float
             vector.z = Mathf.Cos(orientacion * Mathf.Deg2Rad) * 1.0f; //  * 1.0f se añade para asegurar que el tipo es float
             return vector.normalized;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if(other.gameObject.GetComponent<Agente>())
+                ralentiza = true;
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.gameObject.GetComponent<Agente>())
+                ralentiza = false;
         }
     }
 }

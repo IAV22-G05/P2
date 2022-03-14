@@ -1809,12 +1809,12 @@ GameObject:
   - component: {fileID: 5213294307218149917}
   - component: {fileID: 5752203864169177385}
   - component: {fileID: -2006209089574696171}
-  - component: {fileID: -6900594491068912986}
   - component: {fileID: -5639920102182046074}
   - component: {fileID: 2520688308994357001}
   - component: {fileID: 6930933567146220553}
   - component: {fileID: 8835405198662146800}
   - component: {fileID: 3522805235646513632}
+  - component: {fileID: 8897681044547516972}
   m_Layer: 6
   m_Name: TheseoSinbad
   m_TagString: Untagged
@@ -1873,19 +1873,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 100
   m_CollisionDetection: 0
---- !u!65 &-6900594491068912986
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4833073928106510503}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 6.22919, y: 10.12173, z: 3.03}
-  m_Center: {x: 0.1028199, y: 0.0037809336, z: 0}
 --- !u!114 &-5639920102182046074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1893,7 +1880,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4833073928106510503}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc17ad5ceec15d9498d9f63a447804b6, type: 3}
   m_Name: 
@@ -2049,6 +2036,19 @@ CapsuleCollider:
   m_Radius: 1.02
   m_Height: 5.68
   m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &8897681044547516972
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4833073928106510503}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 4.46
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5015097807748567389
 GameObject:

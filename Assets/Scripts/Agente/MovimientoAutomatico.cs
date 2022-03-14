@@ -41,6 +41,7 @@ namespace UCM.IAV.Movimiento
             rb = GetComponent<Rigidbody>();
             anim = GetComponent<Animator>();
             line = GetComponent<LineRenderer>();
+            enabled = false;
         }
 
 

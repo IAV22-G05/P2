@@ -63,7 +63,8 @@ namespace UCM.IAV.Navegacion
         //Carga del mapa
         private void LoadMap(string filename)
         {
-            string path = Application.dataPath + "/" + mapsDir + "/" + filename;
+            int r = UnityEngine.Random.Range(1, 3);
+            string path = Application.dataPath + "/" + mapsDir + "/" + filename + r.ToString() + ".map";
             try
             {
                 StreamReader strmRdr = new StreamReader(path);

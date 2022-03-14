@@ -64,7 +64,7 @@ namespace UCM.IAV.Movimiento
                     vertexActual = vertexObjetive;
 
                     //Miramos si estamos en el nodo final o no
-                    if (idPath == path.Count)
+                    if (idPath == path.Count || path.Count == 0)
                         setNewPath();
                     else
                     {

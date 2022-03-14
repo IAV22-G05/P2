@@ -1814,6 +1814,7 @@ GameObject:
   - component: {fileID: -7184485756727420794}
   - component: {fileID: -3517802010056802077}
   - component: {fileID: 5603579834457996474}
+  - component: {fileID: 7299586067080412643}
   m_Layer: 0
   m_Name: MinotauroSinbad
   m_TagString: Untagged
@@ -2038,6 +2039,19 @@ MonoBehaviour:
   peso: 1
   prioridad: 1
   objetivo: {fileID: 0}
+--- !u!135 &7299586067080412643
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4833073928106510503}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 4.64
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5015097807748567389
 GameObject:
   m_ObjectHideFlags: 0
