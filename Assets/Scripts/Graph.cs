@@ -177,7 +177,7 @@ namespace UCM.IAV.Navegacion
                 List<Vertex> neighbours = neighbors[current.id];
                 foreach(Vertex v in neighbours)
                 {
-                    tentativeGScore = gScore[current.id] + FindCost(current, v);
+                    tentativeGScore = gScore[current.id] +  FindCost(current, v);
                     if(tentativeGScore < gScore[v.id])
                     {
                         previous[v.id] = current.id;
@@ -194,7 +194,7 @@ namespace UCM.IAV.Navegacion
         private float FindCost(Vertex from, Vertex to)
         {
             for (int i = 0; i < neighbors[from.id].Count; ++i)
-                if (to.id == neighbors[from.id][i].id)
+                     if (to.id == neighbors[from.id][i].id)
                     return costs[from.id][i];
             return 0;
         }
@@ -274,6 +274,16 @@ namespace UCM.IAV.Navegacion
             Vector3 posA = a.transform.position;
             Vector3 posB = b.transform.position;
             return Mathf.Abs(posA.x - posB.x) + Mathf.Abs(posA.y - posB.y);
+        }
+
+        public void UpdateCosts(Vertex last, Vertex next)
+        {
+            for(int i = 0; i < costs[last.id].Count; ++i)
+                costs[last.id][i] = 1;
+
+            for (int i = 0; i < costs[next.id].Count; ++i)
+                costs[next.id][i] = 500;
+
         }
     }
 }

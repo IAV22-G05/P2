@@ -55,7 +55,7 @@ namespace UCM.IAV.Movimiento
                     && transform.position.z <= objetivePos.z + 0.1
                     && transform.position.z >= objetivePos.z - 0.1)
                 {
-                    
+                    graph.UpdateCosts(vertexActual, vertexObjetive);
                     vertexActual = vertexObjetive;
 
                     //Miramos si estamos en el nodo final o no

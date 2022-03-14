@@ -1999,7 +1999,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4833073928106510503}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b1549dc59cae394086ee9d1660b1457, type: 3}
   m_Name: 
@@ -2018,10 +2018,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.81
-  m_Height: 5.74
+  m_Radius: 1.02
+  m_Height: 5.68
   m_Direction: 1
-  m_Center: {x: -0, y: -0.36, z: 0}
+  m_Center: {x: -0, y: 0, z: 0}
 --- !u!114 &5603579834457996474
 MonoBehaviour:
   m_ObjectHideFlags: 0

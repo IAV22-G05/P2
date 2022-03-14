@@ -74,7 +74,7 @@ public class PercepcionMinotauro : ComportamientoAgente
                 && transform.position.z <= objetivePos.z + 0.1
                 && transform.position.z >= objetivePos.z - 0.1)
             {
-
+                graph.UpdateCosts(vertexActual, vertexObj);
                 vertexActual = vertexObj;
                 idPath++;
                 vertexObj = path[idPath];
