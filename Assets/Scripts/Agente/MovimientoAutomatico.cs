@@ -105,12 +105,11 @@ namespace UCM.IAV.Movimiento
 
             //Guardamos pos del vertice
             Vector3 objetivePos = vertexObjetive.gameObject.transform.position;
-            Vector3 actualVertexPos = vertexActual.gameObject.transform.position;
-            Vector3 actualVertexPos1 = transform.position;
+            Vector3 actualVertexPos = transform.position;
 
             //Movemos al jugador
             Direccion direccion =  new Direccion();
-            direccion.lineal = objetivePos - actualVertexPos1;
+            direccion.lineal = objetivePos - actualVertexPos;
             direccion.lineal = direccion.lineal.normalized;
             //Debug.Log(direccion.lineal);
 

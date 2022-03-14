@@ -40,6 +40,8 @@ namespace UCM.IAV.Navegacion
         int numRows;
         GameObject[] vertexObjs;
         bool[,] mapVertices;
+        GameObject teseo;
+        GameObject minotauro;
 
         Vertex exitVertex;
 
@@ -138,8 +140,8 @@ namespace UCM.IAV.Navegacion
                             else if(line[j] == 'p')
                             {
                                 position.y += 1.5f;
-                                GameObject a = Instantiate(TheseoPrefab, position, Quaternion.identity);
-                                MovimientoAutomatico mov = a.GetComponent<MovimientoAutomatico>();
+                                teseo = Instantiate(TheseoPrefab, position, Quaternion.identity);
+                                MovimientoAutomatico mov = teseo.GetComponent<MovimientoAutomatico>();
                                 mov.setGraph(this);
                                 position.y -= 1.5f;
                             }
@@ -147,9 +149,11 @@ namespace UCM.IAV.Navegacion
                             else if(line[j] == 'M')
                             {
                                 position.y += 1.5f;
-                                GameObject a = Instantiate(MinotaurPrefab, position, Quaternion.identity);
-                                MerodeoMinotauro mer = a.GetComponent<MerodeoMinotauro>();
+                                minotauro = Instantiate(MinotaurPrefab, position, Quaternion.identity);
+                                MerodeoMinotauro mer = minotauro.GetComponent<MerodeoMinotauro>();
                                 mer.setGraph(this);
+                                PercepcionMinotauro per = minotauro.GetComponent<PercepcionMinotauro>();
+                                per.setGraph(this);
                                 position.y -= 1.5f;
                             }
 
@@ -160,6 +164,8 @@ namespace UCM.IAV.Navegacion
                             vertexObjs[id].transform.parent = gameObject.transform;
                         }
                     }
+
+                    minotauro.GetComponent<PercepcionMinotauro>().setTeseo(teseo);
 
                     //Añadimos los vecinos de cada vertice
                     for (i = 0; i < numRows; i++)
