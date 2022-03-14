@@ -42,42 +42,33 @@ namespace UCM.IAV.Movimiento
             // movimiento
             //Guardamos pos del vertice
             Vector3 objetivePos = vertexObjetive.gameObject.transform.position;
-            Vector3 actualVertexPos = vertexActual.gameObject.transform.position;
-            Vector3 actualVertexPos1 = transform.position;
-            Vector3 finalPos = final.gameObject.transform.position;
-
+            Vector3 actualVertexPos = transform.position;
 
 
             // Toca seguir un camino
             if (tiempo < tiempoElegir)
             {
 
-                //Si llegamos al ultimo nodo del camino 
-                if (transform.position.x <= finalPos.x + 0.1
-                    && transform.position.x >= finalPos.x - 0.1
-                    && transform.position.z <= finalPos.z + 0.1
-                    && transform.position.z >= finalPos.z - 0.1)
-                {
-
-                    setNewPath();
-
-                    objetivePos = vertexObjetive.gameObject.transform.position;
-                    actualVertexPos = vertexActual.gameObject.transform.position;
-                    actualVertexPos1 = transform.position;
-                    finalPos = final.gameObject.transform.position;
-                }
-
                 //Si llegamos al nodo objetivo, pasamos al siguiente
-                //Hay que cambiar el margen
                 if (transform.position.x <= objetivePos.x + 0.1
                     && transform.position.x >= objetivePos.x - 0.1
                     && transform.position.z <= objetivePos.z + 0.1
                     && transform.position.z >= objetivePos.z - 0.1)
                 {
-
+                    
                     vertexActual = vertexObjetive;
-                    idPath++;
-                    vertexObjetive = path[idPath];
+
+                    //Miramos si estamos en el nodo final o no
+                    if (idPath == path.Count)
+                        setNewPath();
+                    else
+                    {
+                        vertexObjetive = path[idPath];
+                        idPath++;
+                        Debug.Log(path.Count);
+                        Debug.Log(idPath);
+                        
+                    }    
                 }
 
                 tiempo += Time.deltaTime;
@@ -88,11 +79,18 @@ namespace UCM.IAV.Movimiento
                 setNewPath();
             }
 
+            //Recalculamos las posiciones para calcular la direccion
+            objetivePos = vertexObjetive.gameObject.transform.position;
+            actualVertexPos = transform.position;
+
 
             //Movemos al minotauro
             Direccion direccion = new Direccion();
-            direccion.lineal = (objetivePos - actualVertexPos1);
-            direccion.lineal = direccion.lineal.normalized * 5;
+            direccion.lineal = (objetivePos - actualVertexPos);
+            direccion.lineal = direccion.lineal.normalized * 3;
+            //Orientacion
+            direccion.lineal.y = 0;
+            transform.rotation = Quaternion.LookRotation(direccion.lineal, Vector3.up);
 
             return direccion;
         }
@@ -103,7 +101,8 @@ namespace UCM.IAV.Movimiento
             // generación de camino
             vertexActual = graph.GetNearestVertex(transform.position);
             final = graph.getRandomVertex();
-            path = graph.GetPathBFS(final.gameObject, vertexActual.gameObject);
+            path = graph.GetPathAstar(final.gameObject, vertexActual.gameObject, graph.EuclidDist);
+            path = graph.Smooth(path);
 
             //Asignamos el nuevo nodo objetivo
             idPath = 0;

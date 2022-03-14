@@ -298,11 +298,13 @@ namespace UCM.IAV.Navegacion
             Vector2 pos;
             do
             {
-                r = UnityEngine.Random.Range(0, vertices.Count);
+                r = UnityEngine.Random.Range(0, vertices.Count-1);
                 pos = IdToGrid(r);
                 v = vertices[r];
             } while (!mapVertices[(int)pos.x, (int)pos.y]);
 
+            if (v==null)
+                Debug.Log("No funciona el random");
             return v;
         }
         public Vertex getExit()

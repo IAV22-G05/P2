@@ -95,14 +95,6 @@ namespace UCM.IAV.Movimiento
 
         public override Direccion GetDireccion()
         {
-            //PRUEBAS
-            //Vertex actualVertex = graph.GetNearestVertex(transform.position);
-            //if (actualVertex == vertexObjetive)
-            //{
-            //    idPath++;
-            //    vertexObjetive = path[idPath];
-            //}
-
             //Guardamos pos del vertice
             Vector3 objetivePos = vertexObjetive.gameObject.transform.position;
             Vector3 actualVertexPos = vertexActual.gameObject.transform.position;
@@ -121,10 +113,14 @@ namespace UCM.IAV.Movimiento
                 && transform.position.z <= objetivePos.z + 0.1
                 && transform.position.z >= objetivePos.z - 0.1)
             {
-
-                vertexActual = vertexObjetive;
-                idPath++;
-                vertexObjetive = path[idPath];
+                if (idPath != path.Count)
+                {
+                    vertexActual = vertexObjetive;
+                    vertexObjetive = path[idPath];
+                    idPath++;
+                }
+                else
+                    return new Direccion();
             }
 
             //ME DICE JOSSEDA QUE LO CAMBIE CON LA MAGNITUD DE LA DISTANCIA TIENE RAZON

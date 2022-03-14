@@ -37,13 +37,6 @@ namespace UCM.IAV.Movimiento
         {
 
             //Movimiento
-            //Vector3 direccion = new Vector3();
-            //direccion.x = Input.GetAxis("Horizontal");
-            //direccion.z = Input.GetAxis("Vertical");
-            //direccion.Normalize();
-            //direccion *= 10;
-            //rb.velocity = direccion;
-
             Direccion direccion = new Direccion();
             direccion.lineal.x = Input.GetAxis("Horizontal");
             direccion.lineal.z = Input.GetAxis("Vertical");

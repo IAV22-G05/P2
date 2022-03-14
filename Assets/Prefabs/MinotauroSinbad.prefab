@@ -2006,7 +2006,7 @@ MonoBehaviour:
   peso: 1
   prioridad: 1
   objetivo: {fileID: 0}
-  tiempoElegir: 10
+  tiempoElegir: 100
 --- !u!136 &-3517802010056802077
 CapsuleCollider:
   m_ObjectHideFlags: 0
