@@ -1,7 +1,7 @@
 # INTELIGENCIA ARTIFICIAL PARA VIDEOJUEGOS - PRÁCTICA 2 - GRUPO 05
 
 Sergio Molinero Aparicio - Andrés Carnicero Esteban
-
+Video: https://youtu.be/crU1hM41Id8
 Resumen de objetivos.
 
 ## PUNTO DE PARTIDA
@@ -338,3 +338,4 @@ Se utilizará para suavizar los caminos encontrados por A*
 ## REFERENCIAS
 -AI_for_Games_third_edition_2019_Ian_Millington
 -Apunters MARP 2021-2022, Alberto Verdejo.
+-https://en.wikipedia.org/wiki/A*_search_algorithm
