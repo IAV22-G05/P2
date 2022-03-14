@@ -25,6 +25,7 @@ public class PercepcionMinotauro : ComportamientoAgente
     {
         merodeo = GetComponent<MerodeoMinotauro>();
         anim = GetComponent<Animator>();
+        part = GetComponentInChildren<ParticleSystem>();
     }
 
     private void FixedUpdate()

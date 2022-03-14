@@ -14,6 +14,10 @@ namespace UCM.IAV.Movimiento
     /// </summary>
     public class MerodeoMinotauro : ComportamientoAgente
     {
+
+        //Animator 
+        Animator anim;
+
         // Tiempo entre elecciones de vértice objetivo
         [SerializeField]
         float tiempoElegir = 5.0f;
@@ -33,6 +37,7 @@ namespace UCM.IAV.Movimiento
 
         private void Start()
         {
+            anim = GetComponent<Animator>();
             setNewPath();
         }
 
@@ -91,6 +96,13 @@ namespace UCM.IAV.Movimiento
             //Orientacion
             direccion.lineal.y = 0;
             transform.rotation = Quaternion.LookRotation(direccion.lineal, Vector3.up);
+
+            //Animacion minotauro
+            //Animacion
+            if (direccion.lineal.magnitude > 0.8)
+                anim.SetBool("walk", true);
+            else
+                anim.SetBool("walk", false);
 
             return direccion;
         }
