@@ -248,24 +248,20 @@ de los nodos alcanzables en línea recta en la dirección en la que esté mirand
 
 Variables de clase
 
-   float distancia // distancia máxima
+   bool seen // Si el minotauro está viendo a teseo o no
+   
+   Camino camino // Camino hasta teseo
       
-   int sentidoX // (1 si está mirando hacia x positiva, -1 si está mirando hacia x negativa, 0 si está mirando hacia y)
-      
-   int sentidoy // (1 si está mirando hacia y positiva, -1 si está mirando hacia y negativa, 0 si está mirando hacia x)
-      
-#### Update
-
-      (cálculo de sentidoX y sentidoY)
-      bool encontrado
-      int i = 0
-      while i < distancia && !encontrado
-            Vector3 posM(minotauro.pos.x + (i * sentidoX) , minotauro.pos.y (i * sentidoY), minotauro.pos.z)
-            Nodo n = nodoDesdePosicion(posM)
-            if n == null // Si n es null significa que hay una pared 
-                  break
-            encontrado = (nodoDesdePosicion(jugador.pos) == n)
-            i += (distancia entre nodos)
+#### FixedUpdate
+	
+      // En la dirección en la que mira el minotauro
+      if raycast(minotauro, teseo) && !raycast(minotauro, pared)
+      	merodeoMinotauro.activado = false
+	seen = true
+	camino = pathfindAStar(minotauro, teseo)
+       else
+       	merodeoMinotauro.activado = true
+	seen = false
 
 Mientras tenga al jugador a la vista, el minotauro intentará alcanzarle mediante un algoritmo de persecución, buscando el camino
 más corto al jugador mediante A*.
@@ -274,106 +270,40 @@ más corto al jugador mediante A*.
 Se utilizará este algoritmo para realizar las búsquedas de caminos que necesite cada personaje.
 
 ### pathfindAStar(graph: Graph, start: Node, end: Node, heuristic: Heuristic):
-	  // Esta estructura se utiliza para guardar la información de cada nodo
-	  class NodeRecord:
-		node: Node
-		connection: Connection
-		costSoFar: float
-		estimatedTotalCost: float
 
-	  // Inicializa el record para el nodo de inicio
-	  startRecord = new NodeRecord()
-	  startRecord.node = start
-	  startRecord.connection = null
-	  startRecord.costSoFar = 0
-	  startRecord.estimatedTotalCost = heuristic.estimate(start)
+    // Set de nodos descubiertos que necesitan investigarse
+    openSet := {start}
 
-	  // Inicializa las listas de abiertos y cerrados
-	  open = new PathfindingList()
-	  open += startRecord
-	  closed = new PathfindingList()
+    // Para el nodo n, cameFrom[n] será el nodo anterior en el camino más corto
+    cameFrom := vector vacío
 
-	  // Itera procesando cada nodo
-	  while length(open) > 0:
+    // Para el nodo n, gScore[n] será el coste del camino más corto del inicio a n
+    gScore := vector con valor por defecto infinito
+    gScore[start] := 0
 
-		// Encuentra el menor elemento en la lista de abiertos (usando estimatedTotalCost).
-		current = open.smallestElement()
-		// Si es el nodo objetivo, termina el bucle.
-		if current.node == goal:
-			break
+    // Para el nodo n, fScore[n] será el coste del camino más corto estimado del inicio al final pasando por n
+    fScore := vector con valor por defecto infinito
+    fScore[start] := h(start)
 
-		// Si no obtiene sus conexiones a los siguientes nodos.
-		connections = graph.getConnections(current)
+    while openSet is not empty
+        current := el nodo en openSet con el menor fScore[]
+        if current = goal
+            return reconstruct_path(cameFrom, current)
 
-		// Itera por cada conexión.
-		for connection in connections:
-			// Obtiene el coste estimado para el nodo final.
-			endNode = connection.getToNode()
-			endNodeCost = current.costSoFar + connection.getCost()
+        openSet.Remove(current)
+        for each neighbor of current
+            // d(current,neighbor) es el coste de la arista que lleva de current a neighbor
+            // tentative_gScore es la distancia desde el inicio hasta neighbor a través de current
+            tentative_gScore := gScore[current] + d(current, neighbor)
+            if tentative_gScore < gScore[neighbor]
+                cameFrom[neighbor] := current
+                gScore[neighbor] := tentative_gScore
+                fScore[neighbor] := tentative_gScore + h(neighbor)
+                if neighbor not in openSet
+                    openSet.add(neighbor)
 
-			 // Si el nodo está cerrado hay que saltarlo o eliminarlo de la lista de cerrados.
-			 if closed.contains(endNode):
-			 // Encuentra el record para el nodo cerrado.
-				endNodeRecord = closed.find(endNode)
-
-				// Si no encuentra una ruta más corta salta el nodo.
-				if endNodeRecord.costSoFar <= endNodeCost:
-					continue
-
-				// Si la encuentra lo elimina de la lista de cerrados.
-				closed -= endNodeRecord
-
-				// Usa los antiguos valores del nodo para calcular su heuristica sin llamar a la funcion heuristica.
-				endNodeHeuristic = endNodeRecord.estimatedTotalCost - endNodeRecord.costSoFar
-
-			// Salta el nodo si está abierto y no encuentra una mejor ruta.
-			else if open.contains(endNode):
-			// Encuentra el record en la lista de abiertos para el nodo final.
-				endNodeRecord = open.find(endNode)
-
-				// Si la ruta no es mejor, lo salta.
-				if endNodeRecord.costSoFar <= endNodeCost:
-					continue
-
-				// Calcula su heuristica.
-				endNodeHeuristic = endNodeRecord.cost - endNodeRecord.costSoFar
-
-			// Si no, tiene un nodo no visitado, asi que guarda su record.
-			else:
-				endNodeRecord = new NodeRecord()
-				endNodeRecord.node = endNode
-
-				// Calcula el valor heuristico usando la función, ya que no tiene un record que usar.
-				endNodeHeuristic = heuristic.estimate(endNode)
-
-			// Actualiza el coste, el estimado y la conexión del nodo.
-			endNodeRecord.cost = endNodeCost
-			endNodeRecord.connection = connection
-			endNodeRecord.estimatedTotalCost = endNodeCost + endNodeHeuristic
-
-			// Y lo añade a la lista de abiertos.
-			if not open.contains(endNode):
-				open += endNodeRecord
-
-		// Añade el nodo a la lista de cerrados y lo añade a la de abiertos.
-		open -= current
-		closed += current
-
-	   if current.node != goal:   
-		// No hay más nodos y no ha encontrado el final así que no hay solución.
-		return null
-
-	   else:
-		// Compila la lista de conexiones en el camino.
-		path = []
-
-		// Recorre el camino hacia atrás acumulando conexiones.
-		while current.node != start:
-			path += current.connection
-			current = current.connection.getFromNode()
-
-		// Da la vuelta al camino y lo devuelve.
-		return reverse(path)
+    // openSet está vacío pero no se ha llegado al final
+    return failure
 
 ## ALGORITMO DE SUAVIZADO
 Se utilizará para suavizar los caminos encontrados por A*
