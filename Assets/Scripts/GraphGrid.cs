@@ -99,7 +99,7 @@ namespace UCM.IAV.Navegacion
                         {
                             //Si lees ".", es una casilla de suelo
                             bool isGround = true;
-                            if (line[j] == 'T')
+                            if (line[j] == 'T' || line[j] == '1')
                                 isGround = false;
                           
                             mapVertices[i, j] = isGround;
