@@ -307,7 +307,7 @@ namespace UCM.IAV.Navegacion
                 r = UnityEngine.Random.Range(0, vertices.Count-1);
                 pos = IdToGrid(r);
                 v = vertices[r];
-            } while (!mapVertices[(int)pos.x, (int)pos.y]);
+            } while (vertexObjs[r].name == "ObstacleGrid" + r.ToString());
 
             if (v==null)
                 Debug.Log("No funciona el random");

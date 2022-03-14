@@ -63,7 +63,7 @@ namespace UCM.IAV.Movimiento
                 mov.enabled = false;
             }
 
-            if (Input.GetKeyDown(KeyCode.T))
+            if (Input.GetKeyDown(KeyCode.S))
             {
                 mov.setSmooth(!mov.getSmooth());
                 //Debug.Log("SUUUU");

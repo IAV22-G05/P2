@@ -282,7 +282,7 @@ namespace UCM.IAV.Navegacion
                 costs[last.id][i] = 1;
 
             for (int i = 0; i < costs[next.id].Count; ++i)
-                costs[next.id][i] = 500;
+                costs[next.id][i] = 50000;
 
         }
     }
